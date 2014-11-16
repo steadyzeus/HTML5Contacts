@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<title>联系簿</title>
+
+<link href="css/contants.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="js/libs/jquery/jquery.js"></script>
+<script src="js/libs/contacts/contacts.js" type="text/javascript"></script>
+<script src="js/libs/jquerymobile/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>
+<script src="js/libs/iscroll/iscroll.js" type="text/javascript"></script>
+<script>
+    $('body').ready(function(){
+        var length = 26;
+        var aCharCode = 'A'.charCodeAt();
+        var lst = [];
+        var ordDom = $('#scroller');
+        for(var i = 0;i < length;i++){
+            lst[i] = String.fromCharCode(aCharCode+i);
+            var item = $("<li></li>");
+            var aItem = $("<a></a>");
+            aItem.css('width','100%');
+            aItem.css('height','100%');
+            aItem.css('margin','8px 2px');
+            aItem.css('display','block');
+            aItem.append(lst[i]);
+            item.append(aItem);
+            ordDom.append(item);
+        }
+        
+        var myscroll=new IScroll("#wrapper",{  preventDefault: false ,tap:false});
+        myscroll.refresh();
+        var myscroll2 =new IScroll("#wrapper2",{ preventDefault: true,tap:false});
+   
+        var mx = [];
+        var ix = 0;
+      
+        var liHeight = $('#scroller2 li').height();
+        $('#scroller2 li').each(function(idx,ele){
+           var len = $(this).text().length;
+         
+           if(len === 1){
+               
+               if(ix > 1){
+                   var last = mx.length > 0? mx[mx.length -1]:0;
+                   mx.push(last + ix * liHeight);
+               }
+               ix = 1;
+           }
+           else{
+               ix++;
+           }
+       });
+       
+        
+        var cMh = liHeight * parseInt($('#scroller2 li').length);
+        var wMh = myscroll2.wrapperHeight;
+        var jx = new IndexedScroller(liHeight,cMh,wMh,myscroll2,mx);
+        $('#scroller li a').on('click',function(event){
+            var str = $(event.target).html();
+            var idx = lst.indexOf(str);
+            jx.handle(idx);
+        });
+        
+        document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+    });
+    
+    
+    
+    
+    IndexedScroller.prototype.handle = function(idx){
+        var xd = -1;
+        if(idx > 0){
+            xd = this.xs[idx - 1]; 
+        }
+        
+        if(idx > 0 && xd > 0 && xd <= this.maxDist ){
+            this.scroller.scrollTo(0,-xd,100);
+        }
+        else if(idx === 0){
+            this.scroller.scrollTo(0,0,100);
+        }
+        
+           
+    };   
+    
+    function IndexedScroller(h,cmaxh,wmaxh,scroller,xs){
+        //cmaxh--内容最大高度
+        //wmaxh--容器高度
+        IndexedScroller.prototype.offX = 0
+        IndexedScroller.prototype.h = h;
+        IndexedScroller.prototype.cmaxh = parseInt(cmaxh);
+        IndexedScroller.prototype.wmaxh = parseInt(wmaxh);
+        IndexedScroller.prototype.scroller = scroller;
+        IndexedScroller.prototype.maxDist = cmaxh - wmaxh ;
+        IndexedScroller.prototype.xs = xs;
+       
+    };
+    
+    
+    
+</script>
+</head>
+<body>
+    <div class="content">
+        <div class="tool-header">
+            <h2>电话薄</h2>
+        </div>
+        <div id="wrapper" class="side-bar">
+            <ul id="scroller">
+               
+            </ul>
+        </div>
+	<div id="wrapper2" class="listview"> 
+            <ul id="scroller2">
+                <li class="list-divider">A</li>
+                <li><a href="index.html">Adam Kinkaid</a></li>
+                <li><a href="index.html">Alex Wickerham</a></li>
+                <li><a href="index.html">Avery Johnson</a></li>
+                <li class="list-divider">B</li>
+                <li><a href="index.html">Bob Cabot</a></li>
+                <li class="list-divider">C</li>
+                <li><a href="index.html">Caleb Booth</a></li>
+                <li><a href="index.html">Christopher Adams</a></li>
+                <li><a href="index.html">Culver James</a></li>
+                 <li class="list-divider">D</li>
+                <li><a href="index.html">Ddam Kinkaid</a></li>
+                <li><a href="index.html">Dlex Wickerham</a></li>
+                <li><a href="index.html">Dvery Johnson</a></li>
+                <li class="list-divider">E</li>
+                <li><a href="index.html">Eob Cabot</a></li>
+                <li class="list-divider">F</li>
+                <li><a href="index.html">Faleb Booth</a></li>
+                <li><a href="index.html">Fhristopher Adams</a></li>
+                <li><a href="index.html">Fulver James</a></li>
+                <li class="list-divider">G</li>
+                <li><a href="index.html">Galeb Booth</a></li>
+                <li><a href="index.html">Ghristopher Adams</a></li>
+                <li><a href="index.html">Gulver James</a></li>
+                <li class="list-divider">H</li>
+                <li><a href="index.html">Haleb Booth</a></li>
+                <li><a href="index.html">Hhristopher Adams</a></li>
+                <li><a href="index.html">Hulver James</a></li>
+            </ul>
+	</div>
+    </div>
+</body>
+</html>
