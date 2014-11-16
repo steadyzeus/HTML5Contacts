@@ -57,10 +57,11 @@
         var cMh = liHeight * parseInt($('#scroller2 li').length);
         var wMh = myscroll2.wrapperHeight;
         var jx = new IndexedScroller(liHeight,cMh,wMh,myscroll2,mx);
-        $('#scroller li a').on('click',function(event){
+        $('#scroller li a').on('touchstart',function(event){
+            event.preventDefault();
             var str = $(event.target).html();
             var idx = lst.indexOf(str);
-            jx.handle(idx);
+            jx.handle(idx,str);
         });
         
         document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
@@ -69,19 +70,25 @@
     
     
     
-    IndexedScroller.prototype.handle = function(idx){
-        var xd = -1;
-        if(idx > 0){
-            xd = this.xs[idx - 1]; 
-        }
-        
-        if(idx > 0 && xd > 0 && xd <= this.maxDist ){
-            this.scroller.scrollTo(0,-xd,100);
-        }
-        else if(idx === 0){
-            this.scroller.scrollTo(0,0,100);
-        }
-        
+    IndexedScroller.prototype.handle = function(idx,key){
+//        var xd = -1;
+//        if(idx > 0){
+//            xd = this.xs[idx - 1]; 
+//        }
+//        
+//        if(idx > 0 && xd > 0 && xd <= this.maxDist ){
+//            this.scroller.scrollTo(0,-xd,100);
+//        }
+//        else if(idx === 0){
+//            this.scroller.scrollTo(0,0,100);
+//        }
+        var me = this;
+         $('#scroller2 li').each(function(ix,ele){
+             var pKey = $(this).text();
+            if(key == pKey){
+                me.scroller.scrollToElement(ele,150);
+            } 
+         });
            
     };   
     
